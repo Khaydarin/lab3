@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <stdio.h>
+#include <algorithm>
 
 #include "Slav.h"
 
@@ -48,20 +49,51 @@ void containers(Slav * slavs, int n)
 	printf("## vector\n");
 
 	// Umieść Słowian w losowej kolejności w wektorze.
+	for(int i = 0; i < n; i++)
+	{
+		vectorOfSlavs.insert(vectorOfSlavs.begin(), slavs+i);
+	}
+	random_shuffle(vectorOfSlavs.begin(), vectorOfSlavs.end());
+
 
 	// Wykorzystując iterator i funkcję description(), wyświetl wszystkich Słowian w wektorze
+	vector<Slav*>::iterator itr = vectorOfSlavs.begin();
+	for(itr;itr<vectorOfSlavs.end();itr++)
+	{
+		cout<< (*itr)->description() <<endl;
+	}
 
 	REPORT_CONTAINERS;
 	printf("## set\n");
 
 	// Przenieś wszystkich Słowian z wektoru do zbioru.
+	itr=vectorOfSlavs.begin();
+	for(itr;itr<vectorOfSlavs.end();itr++)
+	{
+		setOfSlavs.insert(*itr);
+	}
+	while(vectorOfSlavs.size())
+	{
+		vectorOfSlavs.pop_back();
+	}
 	
 	REPORT_CONTAINERS;
 	printf("## map\n");
 
 	// Stwórz słownik tworzący pary Słowian, z tych znajdujących się w zbiorze, czyszcząc zbiór
-	
+	set<Slav*>::iterator itr2 = setOfSlavs.begin();
+	for(itr2;itr2!=setOfSlavs.end();itr2++)
+	{
+		mapOfSlavs[(*itr2)]=*(++itr2);
+	}
+	setOfSlavs.empty();
+
 	// Wykorzystując iterator, wyświetl wszystkie pary Słowian
+	map<Slav*,Slav*>::iterator itr3 = mapOfSlavs.begin();
+	for(itr3;itr3!=mapOfSlavs.end();itr3++)
+	{
+		cout <<"1: " <<(itr3->first)->description()<<endl<<"2: "<< (itr3->second)->description()<<endl;
+	}
 	
 	REPORT_CONTAINERS;
 }
